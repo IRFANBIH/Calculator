@@ -16,18 +16,55 @@ class Calculator{
 
     }
     useNumber(number){
-        this.nowOperation = number
+        if (number === '.' && this.nowOperation.includes('.'))
+        return
+        this.nowOperation = this.nowOperation.toString() + number.toString()
 
     }
     chooseOperation(operation){
+        if(this.nowOperation === '')
+        return
+        if(this.oldOperation !== '') {
+            this.compute()
+        }
+        
+        this.operation = operation
+        this.oldOperation = this.nowOperation
+        this.nowOperation = ''
 
-    }
+    } 
     compute(){
+        let completion
+        const prev = parseFloat(this.oldOperation)
+        const newOp = parseFloat(this.nowOperation)
+        if(isNaN(prev) || isNaN(newOp))
+        return
+        switch (this.operation){
+            case '+':
+                completion = prev + newOp
+                break
+             case '-':
+                completion = prev - newOp
+                break
+            case 'x':
+                completion = prev * newOp
+                 break
+            case '÷':
+                completion = prev / newOp
+                break
+            default:
+                return
+        }
+        this.nowOperation = completion
+        this.operation = undefined
+        this.oldOperation = ''
 
     }
     updateDisplay(){
         this.nowOperationText.innerText = this.nowOperation
+        this.oldOperationText.innerText = this.oldOperation
 
+        
     }
 }
 
@@ -48,3 +85,21 @@ numberButtons.forEach(button => {
         calculator.updateDisplay()
     }) 
 }) 
+
+
+operationButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        calculator.chooseOperation(button.innerText)
+        calculator.updateDisplay()
+    }) 
+})
+
+equalsButton.addEventListener('click', button => {
+    calculator.compute()
+    calculator.updateDisplay()
+})
+
+allClearButton.addEventListener('click', button => {
+    calculator.clear()
+    calculator.updateDisplay()
+})
