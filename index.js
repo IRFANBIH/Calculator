@@ -61,9 +61,32 @@ class Calculator{
         this.oldOperation = ''
 
     }
+
+    getDisplayNumber(number){
+        const stringNumber = number.toString()
+        const integerNumber = parseFloat(stringNumber.split('.')[0])
+        const decimalNumber = stringNumber.split('.')[1]
+        let integerDisplay
+    if (isNaN(integerNumber)) {
+      integerDisplay = ''
+    } else {
+      integerDisplay = integerNumber.toLocaleString('en', { maximumFractionDigits: 0 })
+    }
+    if (decimalNumber != null) {
+      return `${integerDisplay}.${decimalNumber}`
+    } else {
+      return integerDisplay
+    }
+    }
+
     updateDisplay(){
-        this.nowOperationText.innerText = this.nowOperation
-        this.oldOperationText.innerText = this.oldOperation
+        this.nowOperationText.innerText = this.getDisplayNumber(this.nowOperation)
+        if(this.operation != null){
+            this.oldOperationText.innerText = this.oldOperationText.innerText = `${this.getDisplayNumber(this.oldOperation)} ${this.operation}`
+        } else{
+            this.oldOperationText.innerText = ''
+
+        }
 
         
     }
@@ -98,4 +121,14 @@ operationButtons.forEach(button => {
 equalsButton.addEventListener('click', button => {
     calculator.compute()
     calculator.updateDisplay()
-  })
+})
+
+allClearButton.addEventListener('click', button => {
+    calculator.clear()
+    calculator.updateDisplay()
+})
+
+deleteButton.addEventListener('click', button => {
+    calculator.delete()
+    calculator.updateDisplay()
+})
