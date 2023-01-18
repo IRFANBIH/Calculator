@@ -13,6 +13,7 @@ class Calculator{
     }
 
     delete(){
+        this.nowOperation = this.nowOperation.toString().slice(0, -1)
 
     }
     useNumber(number){
@@ -70,7 +71,7 @@ class Calculator{
 
 const numberButtons = document.querySelectorAll('[data-number]')
 const operationButtons = document.querySelectorAll('[data-operation]')
-const equalsButton = document.querySelector('[data-equal]')
+const equalsButton = document.querySelector('[data-equals]')
 const deleteButton = document.querySelector('[data-delete]')
 const allClearButton = document.querySelector('[data-all-clear]')
 const oldOperationText = document.querySelector('[data-old]')
@@ -97,9 +98,4 @@ operationButtons.forEach(button => {
 equalsButton.addEventListener('click', button => {
     calculator.compute()
     calculator.updateDisplay()
-})
-
-allClearButton.addEventListener('click', button => {
-    calculator.clear()
-    calculator.updateDisplay()
-})
+  })
